@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -70,11 +71,13 @@ class SnakeViewModel : ViewModel() {
         newItem()
         viewModelScope.launch {
             while (true) {
-                delay(drawFrame)
-                val elapsedTime = System.currentTimeMillis() - previewTime
-                if (elapsedTime >= timeDraw) {
-                    checkMove()
-                    previewTime = System.currentTimeMillis()
+                if (isActive){
+                    delay(drawFrame)
+                    val elapsedTime = System.currentTimeMillis() - previewTime
+                    if (elapsedTime >= timeDraw) {
+                        checkMove()
+                        previewTime = System.currentTimeMillis()
+                    }
                 }
             }
         }
