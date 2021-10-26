@@ -30,6 +30,7 @@ class SnakeViewModel : ViewModel() {
     private var previewTime = System.currentTimeMillis()
 
     private var moveDirection = MoveDirection.TOP
+    private var tempMoveDirection = moveDirection
 
     private val colors = arrayOf(Color.Black, Color.Cyan, Color.Red, Color.Green)
     private fun randomColor(): Color {
@@ -71,10 +72,11 @@ class SnakeViewModel : ViewModel() {
         newItem()
         viewModelScope.launch {
             while (true) {
-                if (isActive){
+                if (isActive) {
                     delay(drawFrame)
                     val elapsedTime = System.currentTimeMillis() - previewTime
                     if (elapsedTime >= timeDraw) {
+                        moveDirection = tempMoveDirection
                         checkMove()
                         previewTime = System.currentTimeMillis()
                     }
@@ -224,7 +226,7 @@ class SnakeViewModel : ViewModel() {
     }
 
     private fun setMoveDirection(moveDirection: MoveDirection) {
-        this.moveDirection = moveDirection
+        this.tempMoveDirection = moveDirection
     }
 
 
